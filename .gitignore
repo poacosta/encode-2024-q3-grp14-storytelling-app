@@ -38,3 +38,4 @@ next-env.d.ts
 /.idea/.gitignore
 /.idea/modules.xml
 /.idea/story-telling-app.iml
+/.idea/vcs.xml
