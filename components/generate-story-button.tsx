@@ -17,11 +17,12 @@ const GenerateStoryButton: React.FC<GenerateStoryButtonProps> = ({isLoading, sta
         };
         append(message);
         if (usercharacters !== null) {
-            for (const character of usercharacters){
+            for (const item of usercharacters){
+                console.log(item)
                 let newmessage: CreateMessage = {
                     role: "user",
-                    content: `Add this character to the story with the name ${character.name},
-                    with these description ${character.description} and personality ${character.personality} `
+                    content: `Add this character to the story with the name ${item.name},
+                    with these description ${item.description} and personality ${item.personality} `
                 };
                 append(newmessage);
             }

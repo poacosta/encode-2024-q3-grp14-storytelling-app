@@ -16,6 +16,7 @@ export default function Chat() {
         setState({...state, [name]: value});
     };
     const [formData, setFormData] = useState({
+        index: undefined,
         name: '',
         description: '',
         personality: '',
@@ -27,15 +28,36 @@ export default function Chat() {
           [name]: value,
         }));
     };
-    const [usercharacters, setUserCharacters] = useState([{name: '', description: '', personality: '' }]);
+    const [usercharacters, setUserCharacters] = useState([formData]);
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Send the form data to  
-        setUserCharacters((prevData) => [...prevData, formData]);
-        setFormData({ name: '', description: '', personality: '' });
+        let first_element = usercharacters[0]
+        if (first_element && first_element['name'] === ''){
+            setUserCharacters([])
+        }
+        if (formData['index'] != null){
+            usercharacters[formData['index']] = formData
+            setUserCharacters(usercharacters);
+        } else{
+            setUserCharacters((prevData) =>
+                [...prevData, formData]);
+        }
+        setFormData({ index: undefined, name: '', description: '', personality: '' });
     };
 
+    const handleDelete = (index: number) => {
+        if (usercharacters.length == 1){
+            setUserCharacters([]);
+        } else{
+            let new_set = usercharacters.splice(index, 1);
+            setUserCharacters(new_set);
+        }
+    }
+    const handleEdit = (index: number) => {
+        let record = usercharacters[index];
+        setFormData(record);
+    }
     return (
         <main className="mx-auto w-full p-24 flex flex-col">
             <div className="p4 m-4">
@@ -44,7 +66,8 @@ export default function Chat() {
                     <GenreSelector selectedGenre={state.genre} onChange={handleChange}/>
                     <ToneSelector selectedTone={state.tone} onChange={handleChange}/>
                     <UserCharacter formData={formData} handleFormChange={handleFormChange}
-                        handleFormSubmit={handleFormSubmit} usercharacters={usercharacters} />
+                        handleFormSubmit={handleFormSubmit} usercharacters={usercharacters}
+                        handleDelete={handleDelete} handleEdit={handleEdit} />
                     <GenerateStoryButton isLoading={isLoading} state={state} append={append}
                         usercharacters={usercharacters}/>
                     <StoryField messages={messages}/>
