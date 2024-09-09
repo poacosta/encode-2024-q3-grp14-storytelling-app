@@ -5,10 +5,10 @@ interface GenerateStoryButtonProps {
     isLoading: boolean;
     state: { genre: string; tone: string; };
     append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>;
-    usercharacters : {name: string, description: string, personality: string }[];
+    userCharacters: { name: string, description: string, personality: string }[];
 }
 
-const GenerateStoryButton: React.FC<GenerateStoryButtonProps> = ({isLoading, state, append, usercharacters}) => {
+const GenerateStoryButton: React.FC<GenerateStoryButtonProps> = ({isLoading, state, append, userCharacters}) => {
 
     const handleClick = () => {
         const message: CreateMessage = {
@@ -16,15 +16,14 @@ const GenerateStoryButton: React.FC<GenerateStoryButtonProps> = ({isLoading, sta
             content: `Generate a story with genre ${state.genre} and tone ${state.tone}`
         };
         append(message);
-        if (usercharacters !== null) {
-            for (const item of usercharacters){
-                console.log(item)
-                let newmessage: CreateMessage = {
+        if (userCharacters !== null) {
+            for (const item of userCharacters) {
+                const newMessage: CreateMessage = {
                     role: "user",
                     content: `Add this character to the story with the name ${item.name},
                     with these description ${item.description} and personality ${item.personality} `
                 };
-                append(newmessage);
+                append(newMessage);
             }
         }
     };

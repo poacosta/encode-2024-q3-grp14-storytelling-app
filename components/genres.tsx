@@ -12,11 +12,11 @@ const GenreSelector = ({selectedGenre, onChange}: {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }) => {
     return (
-        <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
+        <div className="space-y-4 bg-gray-700 rounded-lg p-4">
             <h3 className="text-xl font-semibold">Genre</h3>
             <div className="flex flex-wrap justify-center">
                 {genres.map(({value, emoji}) => (
-                    <div key={value} className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg">
+                    <div key={value} className="p-4 m-2 bg-gray-600 rounded-lg">
                         <input
                             id={value}
                             type="radio"

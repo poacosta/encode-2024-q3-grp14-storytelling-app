@@ -1,67 +1,93 @@
-import React, {useState, createContext, useContext} from "react";
+import React from "react";
 
-const UserCharacter = ({formData, handleFormChange, handleFormSubmit, usercharacters, handleDelete, handleEdit}: {
-        formData : {index: number | undefined, name: string, description: string, personality: string,};
-        handleFormChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-        handleFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-        usercharacters : {name: string, description: string, personality: string }[];
-        handleDelete: (index: number) => void;
-        handleEdit: (index: number) => void;
-
-    }) => {
-
-        return  <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-">
-                <h3>Add User Characters</h3>
-                <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-                    <form className="w-full max-w-sm" onSubmit={handleFormSubmit}>
-                        <input hidden name="index" value={formData.index} />
-                        <div className="my-2">
-                            <label className="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">Name:</label>
-                            <input required type="text" name="name" className="form-input px-4 py-3 text-sm font-medium text-black" value={formData.name} onChange={handleFormChange} />
-                        </div>
-                        <div className="my-2">
-                            <label className="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">Personality:</label>
-                            <input required type="text" className="form-input px-4 py-3 text-sm font-medium text-black" name="personality" 
-                            value={formData.personality} onChange={handleFormChange} />
-                        </div>
-                        <div className="my-2">
-                            <label className="block uppercase tracking-wide text-white-700 text-xs font-bold mb-2" >Description:</label>
-                            <textarea className="form-textarea text-sm font-medium text-black" required name="description" value={formData.description} onChange={handleFormChange} />
-                        </div>
-                        <div className="my-2">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50" type="submit">Submit</button>
-                        </div>
-                    </form>
-                    {usercharacters.length > 0 && (
-                        <div>
-                            <h2 className="my-4 block uppercase tracking-wide text-white-700 text-xs font-bold mb-2">User Characters</h2>
-                            <table className="table-auto">
+const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharacters, handleDelete, handleEdit}: {
+    formData: { index: number | undefined, name: string, description: string, personality: string, };
+    handleFormChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    userCharacters: { name: string, description: string, personality: string }[];
+    handleDelete: (index: number) => void;
+    handleEdit: (index: number) => void;
+}) => {
+    return (
+        <div className="space-y-6 bg-gray-800 rounded-lg p-6 text-white">
+            <h3 className="text-2xl font-bold">Add User Characters</h3>
+            <div className="space-y-6 bg-gray-700 rounded-lg p-6">
+                <form className="w-full max-w-lg" onSubmit={handleFormSubmit}>
+                    <input hidden name="index" value={formData.index}/>
+                    {/* Form fields */}
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2" htmlFor="name">Name:</label>
+                        <input required type="text" id="name" name="name"
+                               className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+                               value={formData.name} onChange={handleFormChange}/>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2" htmlFor="personality">Personality:</label>
+                        <input required type="text" id="personality" name="personality"
+                               className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+                               value={formData.personality} onChange={handleFormChange}/>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2" htmlFor="description">Description:</label>
+                        <textarea id="description" name="description" required
+                                  className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+                                  value={formData.description} onChange={handleFormChange}/>
+                    </div>
+                    <div className="mb-4">
+                        <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+                            type="submit">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+                {userCharacters.length > 0 ? (
+                    <div>
+                        <h2 className="text-xl font-bold mb-4">User Characters</h2>
+                        <div className="overflow-x-auto">
+                            <table className="w-full table-auto border-collapse">
                                 <thead>
-                                    <tr className="">
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Personality</th>
-                                        <th></th>
-                                    </tr>
+                                <tr className="bg-gray-600">
+                                    <th className="px-4 py-2 text-left">Name</th>
+                                    <th className="px-4 py-2 text-left">Description</th>
+                                    <th className="px-4 py-2 text-left">Personality</th>
+                                    <th className="px-4 py-2" colSpan={2}></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {usercharacters.map((item, i) => (
-                                        <tr className="" key={i}>
-                                            {Object.values(item).slice(1).map((value) => (
-                                            <td key={Math.random()}>{value}</td>
-                                            ))}
-                                            <td><button onClick={() => handleEdit(i)}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50" type="submit">Edit</button></td>
-                                            <td><button onClick={() => handleDelete(i)}
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50" type="submit">Delete</button></td>
-                                        </tr>
-                                    ))}
+                                {userCharacters.map((item, i) => (
+                                    <tr key={i} className="border-t border-gray-500">
+                                        {Object.values({...item, index: i}).slice(1).map((value, i) => (
+                                            <td key={i} className="px-4 py-2">{value}</td>
+                                        ))}
+                                        <td className="px-4 py-2">
+                                            <button onClick={() => handleEdit(i)}
+                                                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded-lg transition duration-300 ease-in-out"
+                                                    type="button">
+                                                Edit
+                                            </button>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <button onClick={() => handleDelete(i)}
+                                                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-lg transition duration-300 ease-in-out"
+                                                    type="button">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                                 </tbody>
                             </table>
                         </div>
-                    )}
-                </div>
-
+                    </div>
+                ) : (
+                    <div className="text-center text-gray-400">
+                        <p>No user characters available. Please add a character.</p>
+                    </div>
+                )}
             </div>
+        </div>
+    );
 }
+
 export {UserCharacter};

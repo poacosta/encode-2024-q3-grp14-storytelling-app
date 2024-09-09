@@ -22,41 +22,34 @@ export default function Chat() {
         personality: '',
     });
     const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
+            ...prevData,
+            [name]: value,
         }));
     };
-    const [usercharacters, setUserCharacters] = useState([formData]);
+    const [userCharacters, setUserCharacters] = useState([formData]);
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        let first_element = usercharacters[0]
-        if (first_element && first_element['name'] === ''){
+        if (userCharacters[0] && userCharacters[0]['name'] === '') {
             setUserCharacters([])
         }
-        if (formData['index'] != null){
-            usercharacters[formData['index']] = formData
-            setUserCharacters(usercharacters);
-        } else{
+        if (formData['index'] != null) {
+            userCharacters[formData['index']] = formData
+            setUserCharacters(userCharacters);
+        } else {
             setUserCharacters((prevData) =>
                 [...prevData, formData]);
         }
-        setFormData({ index: undefined, name: '', description: '', personality: '' });
+        setFormData({index: undefined, name: '', description: '', personality: ''});
     };
 
     const handleDelete = (index: number) => {
-        if (usercharacters.length == 1){
-            setUserCharacters([]);
-        } else{
-            let new_set = usercharacters.splice(index, 1);
-            setUserCharacters(new_set);
-        }
+        setUserCharacters((prevCharacters) => prevCharacters.filter((_, i) => i !== index));
     }
     const handleEdit = (index: number) => {
-        let record = usercharacters[index];
-        setFormData(record);
+        setFormData(userCharacters[index]);
     }
     return (
         <main className="mx-auto w-full p-24 flex flex-col">
@@ -66,10 +59,10 @@ export default function Chat() {
                     <GenreSelector selectedGenre={state.genre} onChange={handleChange}/>
                     <ToneSelector selectedTone={state.tone} onChange={handleChange}/>
                     <UserCharacter formData={formData} handleFormChange={handleFormChange}
-                        handleFormSubmit={handleFormSubmit} usercharacters={usercharacters}
-                        handleDelete={handleDelete} handleEdit={handleEdit} />
+                                   handleFormSubmit={handleFormSubmit} userCharacters={userCharacters}
+                                   handleDelete={handleDelete} handleEdit={handleEdit}/>
                     <GenerateStoryButton isLoading={isLoading} state={state} append={append}
-                        usercharacters={usercharacters}/>
+                                         userCharacters={userCharacters}/>
                     <StoryField messages={messages}/>
                 </div>
             </div>
