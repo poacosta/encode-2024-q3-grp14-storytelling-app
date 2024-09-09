@@ -46,11 +46,7 @@ export default function Chat() {
     };
 
     const handleDelete = (index: number) => {
-        if (userCharacters.length == 1) {
-            setUserCharacters([]);
-        } else {
-            setUserCharacters(userCharacters.splice(index, 1));
-        }
+        setUserCharacters((prevCharacters) => prevCharacters.filter((_, i) => i !== index));
     }
     const handleEdit = (index: number) => {
         setFormData(userCharacters[index]);

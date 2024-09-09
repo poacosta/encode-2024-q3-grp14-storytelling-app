@@ -8,7 +8,6 @@ const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharac
     handleDelete: (index: number) => void;
     handleEdit: (index: number) => void;
 }) => {
-
     return (
         <div className="space-y-6 bg-gray-800 rounded-lg p-6 text-white">
             <h3 className="text-2xl font-bold">Add User Characters</h3>
@@ -42,7 +41,7 @@ const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharac
                         </button>
                     </div>
                 </form>
-                {userCharacters.length > 0 && (
+                {userCharacters.length > 0 ? (
                     <div>
                         <h2 className="text-xl font-bold mb-4">User Characters</h2>
                         <div className="overflow-x-auto">
@@ -58,12 +57,12 @@ const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharac
                                 <tbody>
                                 {userCharacters.map((item, i) => (
                                     <tr key={i} className="border-t border-gray-500">
-                                        {Object.values(item).slice(1).map((value, index) => (
-                                            <td key={index} className="px-4 py-2">{value}</td>
+                                        {Object.values({...item, index: i}).slice(1).map((value, i) => (
+                                            <td key={i} className="px-4 py-2">{value}</td>
                                         ))}
                                         <td className="px-4 py-2">
                                             <button onClick={() => handleEdit(i)}
-                                                    className="bg-green-500 hover:bg-yellow-600 text-white font-bold py-1 px-3 rounded-lg transition duration-300 ease-in-out"
+                                                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded-lg transition duration-300 ease-in-out"
                                                     type="button">
                                                 Edit
                                             </button>
@@ -81,9 +80,14 @@ const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharac
                             </table>
                         </div>
                     </div>
+                ) : (
+                    <div className="text-center text-gray-400">
+                        <p>No user characters available. Please add a character.</p>
+                    </div>
                 )}
             </div>
         </div>
     );
 }
+
 export {UserCharacter};
