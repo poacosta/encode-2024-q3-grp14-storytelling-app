@@ -16,16 +16,20 @@ export default function Chat() {
     const handleChange = ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>) => {
         setState({...state, [name]: value});
     };
-    const [formData, setFormData] = useState<{
+
+    interface Character {
         name: string;
         description: string;
         personality: string;
-    }>({
+    }
+
+    const [formData, setFormData] = useState<Character>({
         name: '',
         description: '',
         personality: '',
     });
-    const [userCharacters, setUserCharacters] = useState([formData]);
+
+    const [userCharacters, setUserCharacters] = useState<Character[]>([]);
 
     const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = event.target;
