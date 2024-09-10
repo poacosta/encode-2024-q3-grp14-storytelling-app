@@ -1,12 +1,12 @@
 import React from 'react';
 
-const StoryField = ({messages}: {messages: {content: string}[]}) => {
+const StoryField = ({messages}: { messages: { content: string }[] }) => {
     return <div
         hidden={
             messages.length === 0 ||
             messages[messages.length - 1]?.content.startsWith("Generate")
         }
-        className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
+        className="bg-gray-700 rounded-lg p-4"
     >
         {messages[messages.length - 1]?.content}
     </div>

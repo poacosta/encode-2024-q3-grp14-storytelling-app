@@ -8,29 +8,18 @@ interface GenerateStoryButtonProps {
     userCharacters: { name: string, description: string, personality: string }[];
 }
 
-const messages: CreateMessage[] = [];
+const messages: string[] = [];
 
 const GenerateStoryButton: React.FC<GenerateStoryButtonProps> = ({isLoading, state, append, userCharacters}) => {
     const handleClick = () => {
-        messages.push({
-            role: "user",
-            content: `Generate a story with genre ${state.genre} and tone ${state.tone}.`
-        });
+        messages.push(`Generate a story with genre ${state.genre} and tone ${state.tone}`);
         if (userCharacters.length > 0) {
             for (const item of userCharacters) {
-                messages.push({
-                    role: "user",
-                    content: `Add this character to the story with the name ${item.name}, with these description ${item.description} and personality ${item.personality}.`
-                });
+                messages.push(`Add this character to the story with the name ${item.name}, with these description ${item.description} and personality ${item.personality}`);
             }
-            messages.push({
-                role: "user",
-                content: 'At the end, summarize how each character contributes to the story.'
-            });
+            messages.push('At the end, summarize how each character contributes to the story.');
         }
-        messages.forEach(async (message) => {
-            await append(message);
-        });
+        append({role: "user", content: messages.join('.')});
     };
 
     return <button
