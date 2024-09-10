@@ -1,7 +1,7 @@
 import React from "react";
 
 const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharacters, handleDelete, handleEdit}: {
-    formData: { index: number | undefined, name: string, description: string, personality: string, };
+    formData: { name: string, description: string, personality: string, };
     handleFormChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     handleFormSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
     userCharacters: { name: string, description: string, personality: string }[];
@@ -13,8 +13,6 @@ const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharac
             <h3 className="text-2xl font-bold">Add User Characters</h3>
             <div className="space-y-6 bg-gray-700 rounded-lg p-6">
                 <form className="w-full max-w-lg" onSubmit={handleFormSubmit}>
-                    <input hidden name="index" value={formData.index}/>
-                    {/* Form fields */}
                     <div className="mb-4">
                         <label className="block text-sm font-bold mb-2" htmlFor="name">Name:</label>
                         <input required type="text" id="name" name="name"
@@ -57,9 +55,15 @@ const UserCharacter = ({formData, handleFormChange, handleFormSubmit, userCharac
                                 <tbody>
                                 {userCharacters.map((item, i) => (
                                     <tr key={i} className="border-t border-gray-500">
-                                        {Object.values({...item, index: i}).slice(1).map((value, i) => (
-                                            <td key={i} className="px-4 py-2">{value}</td>
-                                        ))}
+                                        <td className={"px-4 py-2"}>
+                                            {item.name}
+                                        </td>
+                                        <td className={"px-4 py-2"}>
+                                            {item.description}
+                                        </td>
+                                        <td className={"px-4 py-2"}>
+                                            {item.personality}
+                                        </td>
                                         <td className="px-4 py-2">
                                             <button onClick={() => handleEdit(i)}
                                                     className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded-lg transition duration-300 ease-in-out"

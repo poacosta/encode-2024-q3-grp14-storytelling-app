@@ -12,15 +12,21 @@ import {UserCharacter} from "@/components/user-character"
 export default function Chat() {
     const {messages, append, isLoading} = useChat();
     const [state, setState] = useState({genre: "", tone: ""});
+    const [currentIndex, setCurrentIndex] = useState(-1);
     const handleChange = ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>) => {
         setState({...state, [name]: value});
     };
-    const [formData, setFormData] = useState({
-        index: undefined,
+    const [formData, setFormData] = useState<{
+        name: string;
+        description: string;
+        personality: string;
+    }>({
         name: '',
         description: '',
         personality: '',
     });
+    const [userCharacters, setUserCharacters] = useState([formData]);
+
     const handleFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = event.target;
         setFormData((prevData) => ({
@@ -28,29 +34,27 @@ export default function Chat() {
             [name]: value,
         }));
     };
-    const [userCharacters, setUserCharacters] = useState([formData]);
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (userCharacters[0] && userCharacters[0]['name'] === '') {
-            setUserCharacters([])
-        }
-        if (formData['index'] != null) {
-            userCharacters[formData['index']] = formData
-            setUserCharacters(userCharacters);
+        if (currentIndex === -1) {
+            setUserCharacters([...userCharacters, formData]);
         } else {
-            setUserCharacters((prevData) =>
-                [...prevData, formData]);
+            setUserCharacters(userCharacters.map((item, i) => i === currentIndex ? formData : item));
         }
-        setFormData({index: undefined, name: '', description: '', personality: ''});
+        setFormData({name: '', description: '', personality: ''});
+        setCurrentIndex(-1);
     };
 
     const handleDelete = (index: number) => {
         setUserCharacters((prevCharacters) => prevCharacters.filter((_, i) => i !== index));
     }
+
     const handleEdit = (index: number) => {
+        setCurrentIndex(index);
         setFormData(userCharacters[index]);
     }
+
     return (
         <main className="mx-auto w-full p-24 flex flex-col">
             <div className="p4 m-4">
